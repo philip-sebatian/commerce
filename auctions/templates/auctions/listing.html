@@ -13,7 +13,21 @@
         <button type="submit">place bid</button>
    </form>
    {{c_bid.bidding}}
-   
+   {%if not watchlist%}
+   <form action="{%url 'watchlist'%}" method="POST">
+    {%csrf_token%}
+    <input type="hidden" value={{item.id}} name="id">
+    <button type="submit">add to watchlist</button>
+
+</form>
+{%endif%}
+{%if closelisting%}
+    <form action="{%url 'closelisting'%}" method="POST">
+        {%csrf_token%}
+        <input type="hidden" value="{{item.id}}" name="id">
+        <button type="submit">closelisting</button>
+    </form>
+   {%endif%}
    <ul>
     {%for comment in comments%}
     <li>{{comment.comments_owner}}:{{comment.comments}}</li>

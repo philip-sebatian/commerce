@@ -11,6 +11,7 @@ class AuctionListing(models.Model):
     description=models.CharField(max_length=64)
     listingprice=models.IntegerField()
     img=models.URLField()
+    status=models.CharField(default="active",max_length=7)
     
 class bid(models.Model):
     item=models.ForeignKey(AuctionListing,on_delete=models.CASCADE)
@@ -20,3 +21,11 @@ class comments(models.Model):
     item=models.ForeignKey(AuctionListing,on_delete=models.CASCADE)
     comments=models.CharField(max_length=200)
     comments_owner=models.ForeignKey(User,on_delete=models.CASCADE)
+
+class watchlist(models.Model):
+    item=models.ForeignKey(AuctionListing,on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+
+class closelisting(models.Model):
+    item=models.ForeignKey(AuctionListing,on_delete=models.CASCADE)
+    winner=models.ForeignKey(User,on_delete=models.CASCADE)

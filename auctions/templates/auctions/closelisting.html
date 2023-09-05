@@ -1,0 +1,9 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<ul>
+    {%for item in closelisting%}
+    <li>{{item.item}}</li>
+    {%endfor%}
+</ul>
+{% endblock %}

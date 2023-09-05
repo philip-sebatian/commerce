@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.urls import reverse
-from .models import AuctionListing,bid,comments,User
+from .models import AuctionListing,bid,comments,User,watchlist,closelisting
 from django.contrib.auth.decorators import login_required
 
 
@@ -12,7 +12,7 @@ from .models import User
 
 def index(request):
     return render(request, "auctions/index.html",{
-        'items':AuctionListing.objects.all()
+        'items':AuctionListing.objects.filter(status="active")
     })
 
 
@@ -66,14 +66,15 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
-
+@login_required(login_url='login')
 def listing(request,id):
     if request.method=="POST":
         return render(request,'auctions/listing.html',{
-            'item':AuctionListing.objects.get(id=id),'comments':comments.objects.filter(item=AuctionListing.objects.get(id=id)),'c_bid':bid.objects.get(item=AuctionListing.objects.get(id=id))
+            'item':AuctionListing.objects.get(id=id),'comments':comments.objects.filter(item=AuctionListing.objects.get(id=id)),'c_bid':bid.objects.get(item=AuctionListing.objects.get(id=id)),'watchlist':watchlist.objects.filter(item=AuctionListing.objects.get(id=id),user=request.user).exists(),
+            'closelisting':AuctionListing.objects.get(id=id).owner==request.user
         })
     return render(request,'auctions/listing.html',{
-            'item':AuctionListing.objects.get(id=id),'comments':comments.objects.filter(item=AuctionListing.objects.get(id=id)),'c_bid':bid.objects.get(item=AuctionListing.objects.get(id=id))
+            'item':AuctionListing.objects.get(id=id),'comments':comments.objects.filter(item=AuctionListing.objects.get(id=id)),'c_bid':bid.objects.get(item=AuctionListing.objects.get(id=id)),'watchlist':watchlist.objects.filter(item=AuctionListing.objects.get(id=id),user=request.user).exists()
         })
 @login_required(login_url='login')
 def comment(request,id):
@@ -109,3 +110,41 @@ def create(request):
 
         return HttpResponseRedirect(reverse('index'))
     return render(request,"auctions/create.html")
+
+
+@login_required(login_url='login')
+def Watchlist(request):
+    if request.method=="POST":
+        data=request.POST
+        id=data['id']
+        f=AuctionListing.objects.get(id=id)
+        watchlistitem=watchlist(item=f,user=request.user)
+        watchlistitem.save()
+        return render(request,"auctions/watchlist.html",{
+            'watchlist':watchlist.objects.filter(user=request.user)
+        })
+    return render(request,"auctions/watchlist.html",{
+        'watchlist':watchlist.objects.filter(user=request.user)
+    })
+
+
+def deletewatch(request):
+    if request.method=='POST':
+        data=request.POST
+        itemid=data['item']
+        watchlist.objects.get(item=itemid,user=request.user).delete()
+        return HttpResponseRedirect(reverse('watchlist'))
+    
+def closelistings(request):
+    if request.method=="POST":
+        data=request.POST
+        id =data['id']
+        f=AuctionListing.objects.get(id=id)
+        f.status='closed'
+        f.save()
+        return render(request,'auctions/closelisting.html',{
+            'closelisting':AuctionListing.objects.filter(status="closed")
+        })
+    return render(request,'auctions/closelisting.html',{
+            'closelisting':AuctionListing.objects.filter(status="closed")
+        })
