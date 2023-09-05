@@ -10,6 +10,7 @@ class AuctionListing(models.Model):
     owner=models.ForeignKey(User,on_delete=models.CASCADE)
     description=models.CharField(max_length=64)
     listingprice=models.IntegerField()
+    img=models.URLField()
     
 class bid(models.Model):
     item=models.ForeignKey(AuctionListing,on_delete=models.CASCADE)

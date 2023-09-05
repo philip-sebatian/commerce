@@ -75,7 +75,7 @@ def listing(request,id):
     return render(request,'auctions/listing.html',{
             'item':AuctionListing.objects.get(id=id),'comments':comments.objects.filter(item=AuctionListing.objects.get(id=id)),'c_bid':bid.objects.get(item=AuctionListing.objects.get(id=id))
         })
-@login_required
+@login_required(login_url='login')
 def comment(request,id):
     if request.method=='POST':
         data=request.POST
@@ -84,7 +84,7 @@ def comment(request,id):
         f=comments(item=item,comments=com_ment,comments_owner=request.user)
         f.save()
         return HttpResponseRedirect(reverse("listing",args=[id]))
-@login_required
+@login_required(login_url='login')
 def bids(request,id):
     if request.method=='POST':
         data=request.POST
@@ -94,14 +94,15 @@ def bids(request,id):
         f.bidding=current_bid
         f.save()
         return HttpResponseRedirect(reverse("listing",args=[id]))
-
+@login_required(login_url='login')
 def create(request):
     if request.method=="POST":
         data=request.POST
         item=data['item']
         desc=data['desc']
         price=data['price']
-        f=AuctionListing(item=item,listingprice=price,description=desc,owner=request.user)
+        img=data['img']
+        f=AuctionListing(item=item,listingprice=price,description=desc,owner=request.user,img=img)
         f.save()
         x=bid(item=f,bidding=price,highestbider=request.user)
         x.save()

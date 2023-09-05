@@ -4,7 +4,7 @@
     <form action="{%url 'create'%}" method="POST">
         {%csrf_token%}
         <input type="text" name="item" placeholder="item">
-        
+        <input type="url" name="img" placeholder="image">
         <input type="text" name="desc" placeholder="description">
         <input type="number" name="price" placeholder="price">
         <button type="submit">create</button>
