@@ -9,7 +9,7 @@
    </form>
    <form action="{%url 'bids' id=item.id%}" method="POST">
         {%csrf_token%}
-        <input type="int" name="current_bid" min={{c_bid.bidding}}>
+        <input type="number" name="current_bid" min="{{c_bid.bidding}}">
         <button type="submit">place bid</button>
    </form>
    {{c_bid.bidding}}

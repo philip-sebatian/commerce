@@ -14,6 +14,7 @@ class AuctionListing(models.Model):
 class bid(models.Model):
     item=models.ForeignKey(AuctionListing,on_delete=models.CASCADE)
     bidding=models.IntegerField()
+    highestbider=models.ForeignKey(User,on_delete=models.CASCADE)
 class comments(models.Model):
     item=models.ForeignKey(AuctionListing,on_delete=models.CASCADE)
     comments=models.CharField(max_length=200)

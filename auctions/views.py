@@ -94,3 +94,17 @@ def bids(request,id):
         f.bidding=current_bid
         f.save()
         return HttpResponseRedirect(reverse("listing",args=[id]))
+
+def create(request):
+    if request.method=="POST":
+        data=request.POST
+        item=data['item']
+        desc=data['desc']
+        price=data['price']
+        f=AuctionListing(item=item,listingprice=price,description=desc,owner=request.user)
+        f.save()
+        x=bid(item=f,bidding=price,highestbider=request.user)
+        x.save()
+
+        return HttpResponseRedirect(reverse('index'))
+    return render(request,"auctions/create.html")
