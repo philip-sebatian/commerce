@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+   {{item.item}}
+   <form action="{%url 'comment' id=item.id %}" method="POST">
+    {%csrf_token%}
+    <input type="text" name="comment" >
+    <button type="submit">comment</button>
+   </form>
+   <form action="{%url 'bids' id=item.id%}" method="POST">
+        {%csrf_token%}
+        <input type="int" name="current_bid" min={{c_bid.bidding}}>
+        <button type="submit">place bid</button>
+   </form>
+   {{c_bid.bidding}}
+   
+   <ul>
+    {%for comment in comments%}
+    <li>{{comment.comments_owner}}:{{comment.comments}}</li>
+    {%endfor%}
+   </ul>
+{% endblock %}

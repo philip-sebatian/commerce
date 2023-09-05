@@ -1,0 +1,14 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    {%for item in items%}
+    <ul>
+        <li><form action="{%url 'listing' id=item.id%}" method="POST">
+            {%csrf_token%}
+            {{item.item}}
+            <button type="submit">listing</button>
+        </form></li>
+    </ul>
+    {%endfor%}
+{% endblock %}
