@@ -1,12 +1,24 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <form action="{%url 'create'%}" method="POST">
-        {%csrf_token%}
-        <input type="text" name="item" placeholder="item">
-        <input type="url" name="img" placeholder="image">
-        <input type="text" name="desc" placeholder="description">
-        <input type="number" name="price" placeholder="price">
-        <button type="submit">create</button>
-    </form>
+    <div class="background"></div>
+    <div style="display: flex;align-items: center;justify-content: center; height: 90vh;">
+        <div class="card text-bg-dark"style="height: 70vh; width: 70vw;">
+            
+            <div class="card-img-overlay" >
+              <h5 class="card-title">Create Listing</h5>
+              <p class="card-text">This is an interface to create a new listing</p>
+              <br><br>
+              <form action="{%url 'create'%}" method="POST" style="display: flex; justify-content: center;align-items: center;flex-direction: column;gap: 30px;">
+                {%csrf_token%}
+                
+                <input type="text" name="item" placeholder="item" class="inputbox">
+                <input type="url" name="img" placeholder="image" class="inputbox">
+                <input type="text" name="desc" placeholder="description" class="inputbox">
+                <input type="number" name="price" placeholder="price" class="inputbox">
+                <button type="submit" class="btn btn-sm btn-primary">create</button>
+            </form>
+            </div>
+          </div>
+    </div>
 {% endblock %}

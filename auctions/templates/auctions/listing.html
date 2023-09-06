@@ -1,36 +1,68 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-   {{item.item}}
-   <form action="{%url 'comment' id=item.id %}" method="POST">
-    {%csrf_token%}
-    <input type="text" name="comment" >
-    <button type="submit">comment</button>
-   </form>
+   
+   <br>
+   <div style="display: flex;align-items: center;justify-content: center; flex-direction: column;">
+    <div class="card mb-3" >
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{item.img}}" class="img-fluid rounded-start" alt="..." style="height: 50vh; border-radius: 30px;">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{item.item}}</h5>
+              <p class="card-text">{{item.description}}</p>
+              <p class="card-text">Listed by : {{item.owner}}</p>
+              
+   
    <form action="{%url 'bids' id=item.id%}" method="POST">
         {%csrf_token%}
         <input type="number" name="current_bid" min="{{c_bid.bidding}}">
-        <button type="submit">place bid</button>
+        <button type="submit" class="btn btn-primary btn-sm">place bid</button>
    </form>
-   {{c_bid.bidding}}
+   <p>Current Bid : {{c_bid.bidding}}</p>
    {%if not watchlist%}
    <form action="{%url 'watchlist'%}" method="POST">
     {%csrf_token%}
     <input type="hidden" value={{item.id}} name="id">
-    <button type="submit">add to watchlist</button>
+    <button type="submit" class="btn btn-primary btn-sm">add to watchlist</button>
 
 </form>
 {%endif%}
+<br>
 {%if closelisting%}
     <form action="{%url 'closelisting'%}" method="POST">
         {%csrf_token%}
         <input type="hidden" value="{{item.id}}" name="id">
-        <button type="submit">closelisting</button>
+        <button type="submit" class="btn btn-primary btn-sm">closelisting</button>
     </form>
    {%endif%}
-   <ul>
-    {%for comment in comments%}
-    <li>{{comment.comments_owner}}:{{comment.comments}}</li>
-    {%endfor%}
-   </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="comment">
+        <br>
+        <h5 style="padding-left: 10px;">COMMENTS</h5>
+        <hr >
+        <ul>
+            {%for comment in comments%}
+            <li style="color: white;">{{comment.comments_owner}}:{{comment.comments}}</li>
+            {%endfor%}
+           </ul>
+
+           
+    
+      </div>
+      <div>
+        <form action="{%url 'comment' id=item.id %}" method="POST">
+            {%csrf_token%}
+            <input type="text" name="comment" style="width: 65vw;">
+            <button type="submit" class="btn btn-primary btn-sm">comment</button>
+           </form>
+       </div>
+      
+   </div>
+   
 {% endblock %}

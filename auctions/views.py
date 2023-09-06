@@ -12,7 +12,7 @@ from .models import User
 
 def index(request):
     return render(request, "auctions/index.html",{
-        'items':AuctionListing.objects.filter(status="active")
+        'items':AuctionListing.objects.filter(status="active"),"range":range(1,len(AuctionListing.objects.filter(status="active"))+1)
     })
 
 
@@ -94,6 +94,7 @@ def bids(request,id):
         current_bid=data['current_bid']
         f=bid.objects.get(item=item)
         f.bidding=current_bid
+        f.highestbider=request.user
         f.save()
         return HttpResponseRedirect(reverse("listing",args=[id]))
 @login_required(login_url='login')
@@ -119,8 +120,9 @@ def Watchlist(request):
         data=request.POST
         id=data['id']
         f=AuctionListing.objects.get(id=id)
-        watchlistitem=watchlist(item=f,user=request.user)
-        watchlistitem.save()
+        if not watchlist.objects.filter(item=f,user=request.user):
+            watchlistitem=watchlist(item=f,user=request.user)
+            watchlistitem.save()
         return render(request,"auctions/watchlist.html",{
             'watchlist':watchlist.objects.filter(user=request.user)
         })
