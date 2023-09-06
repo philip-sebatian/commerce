@@ -4,7 +4,8 @@
 
     <h2>Register</h2>
 
-    {% if message %}
+    <div style="min-height: 90vh;">
+        {% if message %}
         <div>{{ message }}</div>
     {% endif %}
 
@@ -26,5 +27,6 @@
     </form>
 
     Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+    </div>
 
 {% endblock %}

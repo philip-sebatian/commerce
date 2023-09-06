@@ -1,16 +1,31 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<ul>
+
+<div style="display: flex;justify-content: center; align-items: center; flex-direction: column; min-height: 90vh;">
+<div><h1 style=" color: white;">Closedlistings</h1></div>
     {%for item in closelisting%}
-    
-    <li>
-        {%if item.winner == request.user%}
-    <h4>you won</h4>
+    <div class="card mb-3" >
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{item.item.img}}" class="img-fluid rounded-start" style="height: 50vh; border-radius: 30px;" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{item.item.item}}</h5>
+              <p class="card-text">{{item.item.description}}</p>
+              <p>listed by : {{item.item.owner}}</p>
+              {%if item.winner == request.user%}
+              <div class="alert alert-warning" role="alert">
+                You won this item
+              </div>
     {%endif%}
-        {{item.item}}</li>
-    {%endfor%}
-    
-    
-</ul>
+              
+                
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endfor%}
+    </div>
 {% endblock %}

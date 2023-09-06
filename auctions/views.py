@@ -130,14 +130,14 @@ def Watchlist(request):
         'watchlist':watchlist.objects.filter(user=request.user)
     })
 
-
+@login_required(login_url='login')
 def deletewatch(request):
     if request.method=='POST':
         data=request.POST
         itemid=data['item']
         watchlist.objects.get(item=itemid,user=request.user).delete()
         return HttpResponseRedirect(reverse('watchlist'))
-    
+@login_required(login_url='login')   
 def closelistings(request):
     if request.method=="POST":
         data=request.POST

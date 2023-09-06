@@ -22,7 +22,7 @@
         <button type="submit" class="btn btn-primary btn-sm">place bid</button>
    </form>
    <p>Current Bid : {{c_bid.bidding}}</p>
-   {%if not watchlist%}
+   {%if not watchlist and  not item.owner == request.user %}
    <form action="{%url 'watchlist'%}" method="POST">
     {%csrf_token%}
     <input type="hidden" value={{item.id}} name="id">
@@ -48,7 +48,7 @@
         <hr >
         <ul>
             {%for comment in comments%}
-            <li style="color: white;">{{comment.comments_owner}}:{{comment.comments}}</li>
+            <li style="color: white;">{{comment.comments_owner}} : {{comment.comments}}</li>
             {%endfor%}
            </ul>
 
