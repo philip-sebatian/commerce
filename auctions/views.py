@@ -74,7 +74,8 @@ def listing(request,id):
             'closelisting':AuctionListing.objects.get(id=id).owner==request.user
         })
     return render(request,'auctions/listing.html',{
-            'item':AuctionListing.objects.get(id=id),'comments':comments.objects.filter(item=AuctionListing.objects.get(id=id)),'c_bid':bid.objects.get(item=AuctionListing.objects.get(id=id)),'watchlist':watchlist.objects.filter(item=AuctionListing.objects.get(id=id),user=request.user).exists()
+            'item':AuctionListing.objects.get(id=id),'comments':comments.objects.filter(item=AuctionListing.objects.get(id=id)),'c_bid':bid.objects.get(item=AuctionListing.objects.get(id=id)),'watchlist':watchlist.objects.filter(item=AuctionListing.objects.get(id=id),user=request.user).exists(),
+            'closelisting':AuctionListing.objects.get(id=id).owner==request.user
         })
 @login_required(login_url='login')
 def comment(request,id):
@@ -142,9 +143,12 @@ def closelistings(request):
         f=AuctionListing.objects.get(id=id)
         f.status='closed'
         f.save()
+        x=closelisting(item=f,winner=bid.objects.get(item=f).highestbider)
+        x.save()
         return render(request,'auctions/closelisting.html',{
-            'closelisting':AuctionListing.objects.filter(status="closed")
+            "closelisting": closelisting.objects.all()
         })
+    
     return render(request,'auctions/closelisting.html',{
-            'closelisting':AuctionListing.objects.filter(status="closed")
+            "closelisting": closelisting.objects.all()
         })

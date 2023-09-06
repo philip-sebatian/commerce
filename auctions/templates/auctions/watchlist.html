@@ -4,6 +4,7 @@
     <ul>
         {%for item in watchlist%}
         <li>
+            
             {{item.item.item}}
             <form action="{%url 'deletewatchlist'%}" method="POST">
             {%csrf_token%}

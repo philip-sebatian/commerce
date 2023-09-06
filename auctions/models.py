@@ -23,9 +23,9 @@ class comments(models.Model):
     comments_owner=models.ForeignKey(User,on_delete=models.CASCADE)
 
 class watchlist(models.Model):
-    item=models.ForeignKey(AuctionListing,on_delete=models.CASCADE)
+    bitem=models.ForeignKey(bid,on_delete=models.CASCADE)
     user=models.ForeignKey(User,on_delete=models.CASCADE)
 
 class closelisting(models.Model):
-    item=models.ForeignKey(AuctionListing,on_delete=models.CASCADE)
+    item=models.ForeignKey(AuctionListing,on_delete=models.CASCADE,related_name="bidq")
     winner=models.ForeignKey(User,on_delete=models.CASCADE)

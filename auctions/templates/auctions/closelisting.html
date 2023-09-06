@@ -3,7 +3,14 @@
 {% block body %}
 <ul>
     {%for item in closelisting%}
-    <li>{{item.item}}</li>
+    
+    <li>
+        {%if item.winner == request.user%}
+    <h4>you won</h4>
+    {%endif%}
+        {{item.item}}</li>
     {%endfor%}
+    
+    
 </ul>
 {% endblock %}
