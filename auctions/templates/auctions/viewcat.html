@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<div style="display: flex;justify-content: center; align-items: center; flex-direction: column; min-height: 90vh;">
+    <div><h1 style=" color: white;">{{cat}}</h1></div>
+        {%for item in items%}
+        <div class="card mb-3" >
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="{{item.img}}" class="img-fluid rounded-start" style="height: 50vh; border-radius: 30px;" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{item.item}}</h5>
+                  <p class="card-text">{{item.description}}</p>
+                  <p>listed by : {{item.owner}}</p>
+                  <p>Listing Price : {{item.listingprice}}</p>
+                  <p>Category : {{cat}}</p>
+                  
+                    
+                </div>
+              </div>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+
+{% endblock %}

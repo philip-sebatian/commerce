@@ -15,12 +15,14 @@
               <p class="card-text">{{item.description}}</p>
               <p class="card-text">Listed by : {{item.owner}}</p>
               
-   
+    {%if  not item.owner == request.user %}
    <form action="{%url 'bids' id=item.id%}" method="POST">
         {%csrf_token%}
         <input type="number" name="current_bid" min="{{c_bid.bidding}}">
         <button type="submit" class="btn btn-primary btn-sm">place bid</button>
    </form>
+   {%endif%}
+
    <p>Current Bid : {{c_bid.bidding}}</p>
    {%if not watchlist and  not item.owner == request.user %}
    <form action="{%url 'watchlist'%}" method="POST">

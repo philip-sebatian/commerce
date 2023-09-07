@@ -16,6 +16,12 @@
                 <input type="url" name="img" placeholder="image" class="inputbox">
                 <input type="text" name="desc" placeholder="description" class="inputbox">
                 <input type="number" name="price" placeholder="price" class="inputbox">
+                <label for="category"> Category</label>
+                <select name="categories" id="cat">
+                    {%for i in category%}
+                        <option value="{{i}}">{{i}}</option>
+                        {%endfor%}
+                </select>
                 <button type="submit" class="btn btn-sm btn-primary">create</button>
             </form>
             </div>

@@ -17,6 +17,7 @@
               <p class="card-text">{{item.item.description}}</p>
               <p>listed by : {{item.item.owner}}</p>
               <p>Listing Price : {{item.item.listingprice}}</p>
+              <p>Category : {{item.item.Category}}</p>
               
                 <form action="{%url 'deletewatchlist'%}" method="POST">
                 {%csrf_token%}

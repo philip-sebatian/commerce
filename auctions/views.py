@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.urls import reverse
-from .models import AuctionListing,bid,comments,User,watchlist,closelisting
+from .models import AuctionListing,bid,comments,User,watchlist,closelisting,category
 from django.contrib.auth.decorators import login_required
 
 
@@ -99,19 +99,31 @@ def bids(request,id):
         return HttpResponseRedirect(reverse("listing",args=[id]))
 @login_required(login_url='login')
 def create(request):
+    category_choice=[
+    'Food',
+    'Vehicles',
+    "Electronics",
+    "Cloths",
+    'Books',
+    "Others"
+]
     if request.method=="POST":
         data=request.POST
         item=data['item']
         desc=data['desc']
         price=data['price']
         img=data['img']
-        f=AuctionListing(item=item,listingprice=price,description=desc,owner=request.user,img=img)
+        Category=data["categories"]
+        f=AuctionListing(item=item,listingprice=price,description=desc,owner=request.user,img=img,Category=Category)
         f.save()
         x=bid(item=f,bidding=price,highestbider=request.user)
         x.save()
+        
 
         return HttpResponseRedirect(reverse('index'))
-    return render(request,"auctions/create.html")
+    return render(request,"auctions/create.html",{
+        "category":category_choice
+    })
 
 
 @login_required(login_url='login')
@@ -153,4 +165,28 @@ def closelistings(request):
     
     return render(request,'auctions/closelisting.html',{
             "closelisting": closelisting.objects.all()
+        })
+
+
+
+def Categories(request):
+    category_choice=[
+    'Food',
+    'Vehicles',
+    "Electronics",
+    "Cloths",
+    'Books',
+    "Others"
+]
+    return render(request,'auctions/categories.html',{
+        'category':category_choice
+    })
+
+def viewcat(request):
+    if request.method=="POST":
+        data=request.POST
+        cat=data['categories']
+        f=AuctionListing.objects.filter(Category=cat,status="active")
+        return render(request,"auctions/viewcat.html",{
+            'items':f ,"cat":cat
         })
